@@ -246,65 +246,69 @@ function Result({ user, analysis, decision, onRetry }: { user: Profile; analysis
   useEffect(() => window.scrollTo({ top: 0 }), []);
   const allSignals = [...analysis.financial.signals, ...analysis.rules.signals, ...analysis.fraud.signals];
   return (
-    <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col items-center text-center">
-        <div className={`flex h-20 w-20 items-center justify-center rounded-full ${ok ? "bg-primary text-primary-foreground" : "bg-destructive text-destructive-foreground"}`}>
-          {ok ? <Check className="h-10 w-10" strokeWidth={3} /> : <X className="h-10 w-10" strokeWidth={3} />}
+    <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500 lg:mt-12 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10">
+      <div className="lg:sticky lg:top-10">
+        <div className="flex flex-col items-center text-center">
+          <div className={`flex h-20 w-20 items-center justify-center rounded-full lg:h-24 lg:w-24 ${ok ? "bg-primary text-primary-foreground" : "bg-destructive text-destructive-foreground"}`}>
+            {ok ? <Check className="h-10 w-10 lg:h-12 lg:w-12" strokeWidth={3} /> : <X className="h-10 w-10 lg:h-12 lg:w-12" strokeWidth={3} />}
+          </div>
+          <h2 className="mt-5 text-3xl font-extrabold lg:text-4xl">{ok ? "Approved" : "Declined"}</h2>
+          <p className="mt-2 text-muted-foreground">{decision.summary}</p>
         </div>
-        <h2 className="mt-5 text-3xl font-extrabold">{ok ? "Approved" : "Declined"}</h2>
-        <p className="mt-2 text-muted-foreground">{decision.summary}</p>
+
+        {ok && (
+          <div className="mt-6 rounded-3xl p-5 lg:p-6" style={{ backgroundImage: "var(--gradient-card)" }}>
+            <div className="flex justify-between text-sm text-muted-foreground"><span>Amount</span><span>Monthly payment</span></div>
+            <div className="mt-1 flex justify-between text-2xl font-bold">
+              <span>{money(user.requestedAmount)}</span><span>{money(analysis.financial.newPayment)}</span>
+            </div>
+          </div>
+        )}
+
+        <button onClick={onRetry} className="mt-6 w-full rounded-2xl bg-secondary py-4 font-semibold lg:hover:bg-accent">
+          {ok ? "Done" : "Back to home"}
+        </button>
       </div>
 
-      {ok && (
-        <div className="mt-6 rounded-3xl p-5" style={{ backgroundImage: "var(--gradient-card)" }}>
-          <div className="flex justify-between text-sm text-muted-foreground"><span>Amount</span><span>Monthly payment</span></div>
-          <div className="mt-1 flex justify-between text-2xl font-bold">
-            <span>{money(user.requestedAmount)}</span><span>{money(analysis.financial.newPayment)}</span>
-          </div>
-        </div>
-      )}
+      <div>
+        {decision.reasons.length > 0 && (
+          <section className="mt-6 rounded-2xl border border-border bg-card p-5 lg:mt-0 lg:p-6">
+            <h3 className="font-semibold">Why this decision</h3>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {decision.reasons.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">•</span>{r}</li>)}
+            </ul>
+          </section>
+        )}
 
-      {decision.reasons.length > 0 && (
-        <section className="mt-6 rounded-2xl border border-border bg-card p-5">
-          <h3 className="font-semibold">Why this decision</h3>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            {decision.reasons.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">•</span>{r}</li>)}
-          </ul>
-        </section>
-      )}
+        {decision.tips.length > 0 && (
+          <section className="mt-3 rounded-2xl border border-border bg-card p-5 lg:p-6">
+            <h3 className="font-semibold">How to improve</h3>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {decision.tips.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">→</span>{r}</li>)}
+            </ul>
+          </section>
+        )}
 
-      {decision.tips.length > 0 && (
-        <section className="mt-3 rounded-2xl border border-border bg-card p-5">
-          <h3 className="font-semibold">How to improve</h3>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            {decision.tips.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">→</span>{r}</li>)}
-          </ul>
-        </section>
-      )}
-
-      <button onClick={() => setOpen(!open)} className="mt-3 flex w-full items-center justify-between rounded-2xl border border-border bg-card p-5 text-left">
-        <span className="font-semibold">See full analysis</span>
-        <ChevronRight className={`h-5 w-5 transition ${open ? "rotate-90" : ""}`} />
-      </button>
-      {open && (
-        <div className="mt-3 space-y-3 rounded-2xl border border-border bg-card p-5 text-sm">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <Mini label="Risk score" value={String(analysis.ml.score)} />
-            <Mini label="Debt load" value={`${Math.round(analysis.financial.dtiAfter * 100)}%`} />
-            <Mini label="Fraud risk" value={`${analysis.fraud.score}/100`} />
-          </div>
-          {allSignals.map((s) => (
-            <div key={s.label} className="flex items-center gap-2">
-              {s.ok ? <Check className="h-4 w-4 text-success" /> : <X className="h-4 w-4 text-destructive" />}
-              <span className={s.ok ? "" : "text-destructive"}>{s.label}</span>
+        <button onClick={() => setOpen(!open)} className="mt-3 flex w-full items-center justify-between rounded-2xl border border-border bg-card p-5 text-left lg:p-6">
+          <span className="font-semibold">See full analysis</span>
+          <ChevronRight className={`h-5 w-5 transition ${open ? "rotate-90" : ""}`} />
+        </button>
+        {open && (
+          <div className="mt-3 space-y-3 rounded-2xl border border-border bg-card p-5 text-sm lg:p-6">
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <Mini label="Risk score" value={String(analysis.ml.score)} />
+              <Mini label="Debt load" value={`${Math.round(analysis.financial.dtiAfter * 100)}%`} />
+              <Mini label="Fraud risk" value={`${analysis.fraud.score}/100`} />
             </div>
-          ))}
-        </div>
-      )}
-
-      <button onClick={onRetry} className="mt-6 w-full rounded-2xl bg-secondary py-4 font-semibold">
-        {ok ? "Done" : "Back to home"}
-      </button>
+            {allSignals.map((s) => (
+              <div key={s.label} className="flex items-center gap-2">
+                {s.ok ? <Check className="h-4 w-4 text-success" /> : <X className="h-4 w-4 text-destructive" />}
+                <span className={s.ok ? "" : "text-destructive"}>{s.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
