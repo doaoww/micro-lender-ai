@@ -38,7 +38,7 @@ function App() {
   const [user, setUser] = useState<Profile | null>(null);
   return (
     <main className="min-h-screen bg-background text-foreground font-sans">
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-10 pt-[max(env(safe-area-inset-top),1.5rem)]">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-10 pt-[max(env(safe-area-inset-top),1.5rem)] lg:max-w-5xl lg:px-10 lg:pt-10">
         {user ? <Dashboard user={user} onLogout={() => setUser(null)} /> : <Login onPick={setUser} />}
       </div>
     </main>
@@ -48,30 +48,38 @@ function App() {
 function Login({ onPick }: { onPick: (p: Profile) => void }) {
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mt-8 flex items-center gap-2">
+      <div className="mt-8 flex items-center gap-2 lg:mt-0">
         <img src="/favicon.png" alt="" width={32} height={32} className="rounded-lg" />
         <span className="font-bold tracking-tight">AI MicroCredit</span>
       </div>
-      <h1 className="mt-14 text-4xl font-extrabold leading-tight tracking-tight">
-        Money when you need it.<br />
-        <span className="text-primary">Decided in seconds.</span>
-      </h1>
-      <p className="mt-4 text-muted-foreground">Choose a demo account to sign in.</p>
-      <div className="mt-8 space-y-3">
-        {PROFILES.map((p) => (
-          <button
-            key={p.id}
-            onClick={() => onPick(p)}
-            className="flex w-full items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition hover:bg-accent active:scale-[0.99]"
-          >
-            <Avatar initials={p.initials} />
-            <div className="flex-1">
-              <div className="font-semibold">{p.name}</div>
-              <div className="text-sm text-muted-foreground">{p.email}</div>
-            </div>
-            <ChevronRight className="h-5 w-5 text-muted-foreground" />
-          </button>
-        ))}
+      <div className="flex flex-1 flex-col lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div>
+          <h1 className="mt-14 text-4xl font-extrabold leading-tight tracking-tight lg:mt-0 lg:text-6xl">
+            Money when you need it.<br />
+            <span className="text-primary">Decided in seconds.</span>
+          </h1>
+          <p className="mt-4 text-muted-foreground lg:text-lg">Choose a demo account to sign in.</p>
+          <p className="mt-8 hidden max-w-md text-sm leading-relaxed text-muted-foreground lg:block">
+            Our AI underwriter analyses your finances, lending rules, risk score and
+            security signals — then explains every decision in plain language.
+          </p>
+        </div>
+        <div className="mt-8 space-y-3 lg:mt-0">
+          {PROFILES.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => onPick(p)}
+              className="flex w-full items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition hover:bg-accent active:scale-[0.99] lg:p-5"
+            >
+              <Avatar initials={p.initials} />
+              <div className="flex-1">
+                <div className="font-semibold">{p.name}</div>
+                <div className="text-sm text-muted-foreground">{p.email}</div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </button>
+          ))}
+        </div>
       </div>
       <p className="mt-auto pt-10 text-center text-xs text-muted-foreground">
         Demo app · All data is synthetic
@@ -153,29 +161,34 @@ function Dashboard({ user, onLogout }: { user: Profile; onLogout: () => void }) 
 
 function Home({ user, onStart }: { user: Profile; onStart: () => void }) {
   return (
-    <>
-      <section className="mt-8 rounded-3xl p-6" style={{ backgroundImage: "var(--gradient-card)" }}>
-        <div className="text-sm text-muted-foreground">You're requesting</div>
-        <div className="mt-1 text-5xl font-extrabold tracking-tight">{money(user.requestedAmount)}</div>
-        <div className="mt-2 text-sm text-muted-foreground">over {user.termMonths} months</div>
-        <button
-          onClick={onStart}
-          className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-bold text-primary-foreground transition active:scale-[0.98]"
-        >
-          <Sparkles className="h-5 w-5" /> Check my eligibility
-        </button>
-      </section>
+    <div className="lg:mt-10 lg:grid lg:grid-cols-5 lg:items-start lg:gap-8">
+      <div className="lg:col-span-2">
+        <section className="mt-8 rounded-3xl p-6 lg:mt-0 lg:p-8" style={{ backgroundImage: "var(--gradient-card)" }}>
+          <div className="text-sm text-muted-foreground">You're requesting</div>
+          <div className="mt-1 text-5xl font-extrabold tracking-tight lg:text-6xl">{money(user.requestedAmount)}</div>
+          <div className="mt-2 text-sm text-muted-foreground">over {user.termMonths} months</div>
+          <button
+            onClick={onStart}
+            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-bold text-primary-foreground transition active:scale-[0.98] lg:hover:brightness-110"
+          >
+            <Sparkles className="h-5 w-5" /> Check my eligibility
+          </button>
+        </section>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <Stat label="Monthly income" value={money(user.monthlyIncome)} />
-        <Stat label="Monthly spending" value={money(user.monthlyExpenses)} />
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <Stat label="Monthly income" value={money(user.monthlyIncome)} />
+          <Stat label="Monthly spending" value={money(user.monthlyExpenses)} />
+        </div>
+        <p className="mt-6 hidden items-center gap-1.5 text-xs text-muted-foreground lg:flex">
+          <ShieldCheck className="h-4 w-4" /> Checking won't affect your credit score
+        </p>
       </div>
 
-      <section className="mt-6">
-        <h2 className="mb-3 font-semibold">Recent activity</h2>
+      <section className="mt-6 lg:col-span-3 lg:mt-0">
+        <h2 className="mb-3 font-semibold lg:text-lg">Recent activity</h2>
         <div className="divide-y divide-border rounded-2xl border border-border bg-card">
           {user.transactions.map((t, i) => (
-            <div key={i} className="flex items-center justify-between p-4">
+            <div key={i} className="flex items-center justify-between p-4 lg:px-6">
               <div>
                 <div className="text-sm font-medium">{t.label}</div>
                 <div className="text-xs text-muted-foreground">{t.date} · {t.category}</div>
@@ -187,10 +200,10 @@ function Home({ user, onStart }: { user: Profile; onStart: () => void }) {
           ))}
         </div>
       </section>
-      <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+      <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground lg:hidden">
         <ShieldCheck className="h-4 w-4" /> Checking won't affect your credit score
       </p>
-    </>
+    </div>
   );
 }
 
@@ -207,13 +220,13 @@ function Analyzing({ step }: { step: number }) {
   const pct = Math.round(((step + 1) / STEPS.length) * 100);
   return (
     <div className="flex flex-1 flex-col items-center justify-center py-10">
-      <div className="relative flex h-40 w-40 items-center justify-center">
+      <div className="relative flex h-40 w-40 items-center justify-center lg:h-48 lg:w-48">
         <div className="absolute inset-0 animate-ping rounded-full bg-primary/10" />
         <div className="absolute inset-3 animate-spin rounded-full border-4 border-secondary border-t-primary" />
-        <span className="text-3xl font-extrabold">{pct}%</span>
+        <span className="text-3xl font-extrabold lg:text-4xl">{pct}%</span>
       </div>
-      <h2 className="mt-10 text-xl font-bold">Analysing your application</h2>
-      <ul className="mt-6 w-full space-y-3">
+      <h2 className="mt-10 text-xl font-bold lg:text-2xl">Analysing your application</h2>
+      <ul className="mt-6 w-full max-w-sm space-y-3">
         {STEPS.map((s, i) => (
           <li key={s} className={`flex items-center gap-3 text-sm transition ${i > step ? "opacity-30" : ""}`}>
             <span className={`flex h-6 w-6 items-center justify-center rounded-full ${i < step ? "bg-primary text-primary-foreground" : "bg-secondary"}`}>
@@ -233,65 +246,69 @@ function Result({ user, analysis, decision, onRetry }: { user: Profile; analysis
   useEffect(() => window.scrollTo({ top: 0 }), []);
   const allSignals = [...analysis.financial.signals, ...analysis.rules.signals, ...analysis.fraud.signals];
   return (
-    <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col items-center text-center">
-        <div className={`flex h-20 w-20 items-center justify-center rounded-full ${ok ? "bg-primary text-primary-foreground" : "bg-destructive text-destructive-foreground"}`}>
-          {ok ? <Check className="h-10 w-10" strokeWidth={3} /> : <X className="h-10 w-10" strokeWidth={3} />}
+    <div className="mt-8 animate-in fade-in slide-in-from-bottom-4 duration-500 lg:mt-12 lg:grid lg:grid-cols-2 lg:items-start lg:gap-10">
+      <div className="lg:sticky lg:top-10">
+        <div className="flex flex-col items-center text-center">
+          <div className={`flex h-20 w-20 items-center justify-center rounded-full lg:h-24 lg:w-24 ${ok ? "bg-primary text-primary-foreground" : "bg-destructive text-destructive-foreground"}`}>
+            {ok ? <Check className="h-10 w-10 lg:h-12 lg:w-12" strokeWidth={3} /> : <X className="h-10 w-10 lg:h-12 lg:w-12" strokeWidth={3} />}
+          </div>
+          <h2 className="mt-5 text-3xl font-extrabold lg:text-4xl">{ok ? "Approved" : "Declined"}</h2>
+          <p className="mt-2 text-muted-foreground">{decision.summary}</p>
         </div>
-        <h2 className="mt-5 text-3xl font-extrabold">{ok ? "Approved" : "Declined"}</h2>
-        <p className="mt-2 text-muted-foreground">{decision.summary}</p>
+
+        {ok && (
+          <div className="mt-6 rounded-3xl p-5 lg:p-6" style={{ backgroundImage: "var(--gradient-card)" }}>
+            <div className="flex justify-between text-sm text-muted-foreground"><span>Amount</span><span>Monthly payment</span></div>
+            <div className="mt-1 flex justify-between text-2xl font-bold">
+              <span>{money(user.requestedAmount)}</span><span>{money(analysis.financial.newPayment)}</span>
+            </div>
+          </div>
+        )}
+
+        <button onClick={onRetry} className="mt-6 w-full rounded-2xl bg-secondary py-4 font-semibold lg:hover:bg-accent">
+          {ok ? "Done" : "Back to home"}
+        </button>
       </div>
 
-      {ok && (
-        <div className="mt-6 rounded-3xl p-5" style={{ backgroundImage: "var(--gradient-card)" }}>
-          <div className="flex justify-between text-sm text-muted-foreground"><span>Amount</span><span>Monthly payment</span></div>
-          <div className="mt-1 flex justify-between text-2xl font-bold">
-            <span>{money(user.requestedAmount)}</span><span>{money(analysis.financial.newPayment)}</span>
-          </div>
-        </div>
-      )}
+      <div>
+        {decision.reasons.length > 0 && (
+          <section className="mt-6 rounded-2xl border border-border bg-card p-5 lg:mt-0 lg:p-6">
+            <h3 className="font-semibold">Why this decision</h3>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {decision.reasons.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">•</span>{r}</li>)}
+            </ul>
+          </section>
+        )}
 
-      {decision.reasons.length > 0 && (
-        <section className="mt-6 rounded-2xl border border-border bg-card p-5">
-          <h3 className="font-semibold">Why this decision</h3>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            {decision.reasons.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">•</span>{r}</li>)}
-          </ul>
-        </section>
-      )}
+        {decision.tips.length > 0 && (
+          <section className="mt-3 rounded-2xl border border-border bg-card p-5 lg:p-6">
+            <h3 className="font-semibold">How to improve</h3>
+            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+              {decision.tips.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">→</span>{r}</li>)}
+            </ul>
+          </section>
+        )}
 
-      {decision.tips.length > 0 && (
-        <section className="mt-3 rounded-2xl border border-border bg-card p-5">
-          <h3 className="font-semibold">How to improve</h3>
-          <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-            {decision.tips.map((r) => <li key={r} className="flex gap-2"><span className="text-primary">→</span>{r}</li>)}
-          </ul>
-        </section>
-      )}
-
-      <button onClick={() => setOpen(!open)} className="mt-3 flex w-full items-center justify-between rounded-2xl border border-border bg-card p-5 text-left">
-        <span className="font-semibold">See full analysis</span>
-        <ChevronRight className={`h-5 w-5 transition ${open ? "rotate-90" : ""}`} />
-      </button>
-      {open && (
-        <div className="mt-3 space-y-3 rounded-2xl border border-border bg-card p-5 text-sm">
-          <div className="grid grid-cols-3 gap-2 text-center">
-            <Mini label="Risk score" value={String(analysis.ml.score)} />
-            <Mini label="Debt load" value={`${Math.round(analysis.financial.dtiAfter * 100)}%`} />
-            <Mini label="Fraud risk" value={`${analysis.fraud.score}/100`} />
-          </div>
-          {allSignals.map((s) => (
-            <div key={s.label} className="flex items-center gap-2">
-              {s.ok ? <Check className="h-4 w-4 text-success" /> : <X className="h-4 w-4 text-destructive" />}
-              <span className={s.ok ? "" : "text-destructive"}>{s.label}</span>
+        <button onClick={() => setOpen(!open)} className="mt-3 flex w-full items-center justify-between rounded-2xl border border-border bg-card p-5 text-left lg:p-6">
+          <span className="font-semibold">See full analysis</span>
+          <ChevronRight className={`h-5 w-5 transition ${open ? "rotate-90" : ""}`} />
+        </button>
+        {open && (
+          <div className="mt-3 space-y-3 rounded-2xl border border-border bg-card p-5 text-sm lg:p-6">
+            <div className="grid grid-cols-3 gap-2 text-center">
+              <Mini label="Risk score" value={String(analysis.ml.score)} />
+              <Mini label="Debt load" value={`${Math.round(analysis.financial.dtiAfter * 100)}%`} />
+              <Mini label="Fraud risk" value={`${analysis.fraud.score}/100`} />
             </div>
-          ))}
-        </div>
-      )}
-
-      <button onClick={onRetry} className="mt-6 w-full rounded-2xl bg-secondary py-4 font-semibold">
-        {ok ? "Done" : "Back to home"}
-      </button>
+            {allSignals.map((s) => (
+              <div key={s.label} className="flex items-center gap-2">
+                {s.ok ? <Check className="h-4 w-4 text-success" /> : <X className="h-4 w-4 text-destructive" />}
+                <span className={s.ok ? "" : "text-destructive"}>{s.label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
