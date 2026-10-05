@@ -48,30 +48,38 @@ function App() {
 function Login({ onPick }: { onPick: (p: Profile) => void }) {
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mt-8 flex items-center gap-2">
+      <div className="mt-8 flex items-center gap-2 lg:mt-0">
         <img src="/favicon.png" alt="" width={32} height={32} className="rounded-lg" />
         <span className="font-bold tracking-tight">AI MicroCredit</span>
       </div>
-      <h1 className="mt-14 text-4xl font-extrabold leading-tight tracking-tight">
-        Money when you need it.<br />
-        <span className="text-primary">Decided in seconds.</span>
-      </h1>
-      <p className="mt-4 text-muted-foreground">Choose a demo account to sign in.</p>
-      <div className="mt-8 space-y-3">
-        {PROFILES.map((p) => (
-          <button
-            key={p.id}
-            onClick={() => onPick(p)}
-            className="flex w-full items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition hover:bg-accent active:scale-[0.99]"
-          >
-            <Avatar initials={p.initials} />
-            <div className="flex-1">
-              <div className="font-semibold">{p.name}</div>
-              <div className="text-sm text-muted-foreground">{p.email}</div>
-            </div>
-            <ChevronRight className="h-5 w-5 text-muted-foreground" />
-          </button>
-        ))}
+      <div className="flex flex-1 flex-col lg:grid lg:grid-cols-2 lg:items-center lg:gap-16">
+        <div>
+          <h1 className="mt-14 text-4xl font-extrabold leading-tight tracking-tight lg:mt-0 lg:text-6xl">
+            Money when you need it.<br />
+            <span className="text-primary">Decided in seconds.</span>
+          </h1>
+          <p className="mt-4 text-muted-foreground lg:text-lg">Choose a demo account to sign in.</p>
+          <p className="mt-8 hidden max-w-md text-sm leading-relaxed text-muted-foreground lg:block">
+            Our AI underwriter analyses your finances, lending rules, risk score and
+            security signals — then explains every decision in plain language.
+          </p>
+        </div>
+        <div className="mt-8 space-y-3 lg:mt-0">
+          {PROFILES.map((p) => (
+            <button
+              key={p.id}
+              onClick={() => onPick(p)}
+              className="flex w-full items-center gap-4 rounded-2xl border border-border bg-card p-4 text-left transition hover:bg-accent active:scale-[0.99] lg:p-5"
+            >
+              <Avatar initials={p.initials} />
+              <div className="flex-1">
+                <div className="font-semibold">{p.name}</div>
+                <div className="text-sm text-muted-foreground">{p.email}</div>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </button>
+          ))}
+        </div>
       </div>
       <p className="mt-auto pt-10 text-center text-xs text-muted-foreground">
         Demo app · All data is synthetic
