@@ -161,29 +161,34 @@ function Dashboard({ user, onLogout }: { user: Profile; onLogout: () => void }) 
 
 function Home({ user, onStart }: { user: Profile; onStart: () => void }) {
   return (
-    <>
-      <section className="mt-8 rounded-3xl p-6" style={{ backgroundImage: "var(--gradient-card)" }}>
-        <div className="text-sm text-muted-foreground">You're requesting</div>
-        <div className="mt-1 text-5xl font-extrabold tracking-tight">{money(user.requestedAmount)}</div>
-        <div className="mt-2 text-sm text-muted-foreground">over {user.termMonths} months</div>
-        <button
-          onClick={onStart}
-          className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-bold text-primary-foreground transition active:scale-[0.98]"
-        >
-          <Sparkles className="h-5 w-5" /> Check my eligibility
-        </button>
-      </section>
+    <div className="lg:mt-10 lg:grid lg:grid-cols-5 lg:items-start lg:gap-8">
+      <div className="lg:col-span-2">
+        <section className="mt-8 rounded-3xl p-6 lg:mt-0 lg:p-8" style={{ backgroundImage: "var(--gradient-card)" }}>
+          <div className="text-sm text-muted-foreground">You're requesting</div>
+          <div className="mt-1 text-5xl font-extrabold tracking-tight lg:text-6xl">{money(user.requestedAmount)}</div>
+          <div className="mt-2 text-sm text-muted-foreground">over {user.termMonths} months</div>
+          <button
+            onClick={onStart}
+            className="mt-8 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-bold text-primary-foreground transition active:scale-[0.98] lg:hover:brightness-110"
+          >
+            <Sparkles className="h-5 w-5" /> Check my eligibility
+          </button>
+        </section>
 
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        <Stat label="Monthly income" value={money(user.monthlyIncome)} />
-        <Stat label="Monthly spending" value={money(user.monthlyExpenses)} />
+        <div className="mt-4 grid grid-cols-2 gap-3">
+          <Stat label="Monthly income" value={money(user.monthlyIncome)} />
+          <Stat label="Monthly spending" value={money(user.monthlyExpenses)} />
+        </div>
+        <p className="mt-6 hidden items-center gap-1.5 text-xs text-muted-foreground lg:flex">
+          <ShieldCheck className="h-4 w-4" /> Checking won't affect your credit score
+        </p>
       </div>
 
-      <section className="mt-6">
-        <h2 className="mb-3 font-semibold">Recent activity</h2>
+      <section className="mt-6 lg:col-span-3 lg:mt-0">
+        <h2 className="mb-3 font-semibold lg:text-lg">Recent activity</h2>
         <div className="divide-y divide-border rounded-2xl border border-border bg-card">
           {user.transactions.map((t, i) => (
-            <div key={i} className="flex items-center justify-between p-4">
+            <div key={i} className="flex items-center justify-between p-4 lg:px-6">
               <div>
                 <div className="text-sm font-medium">{t.label}</div>
                 <div className="text-xs text-muted-foreground">{t.date} · {t.category}</div>
@@ -195,10 +200,10 @@ function Home({ user, onStart }: { user: Profile; onStart: () => void }) {
           ))}
         </div>
       </section>
-      <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+      <p className="mt-6 flex items-center justify-center gap-1.5 text-xs text-muted-foreground lg:hidden">
         <ShieldCheck className="h-4 w-4" /> Checking won't affect your credit score
       </p>
-    </>
+    </div>
   );
 }
 
