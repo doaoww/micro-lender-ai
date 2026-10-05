@@ -38,7 +38,7 @@ function App() {
   const [user, setUser] = useState<Profile | null>(null);
   return (
     <main className="min-h-screen bg-background text-foreground font-sans">
-      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-10 pt-[max(env(safe-area-inset-top),1.5rem)]">
+      <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-5 pb-10 pt-[max(env(safe-area-inset-top),1.5rem)] lg:max-w-5xl lg:px-10 lg:pt-10">
         {user ? <Dashboard user={user} onLogout={() => setUser(null)} /> : <Login onPick={setUser} />}
       </div>
     </main>
