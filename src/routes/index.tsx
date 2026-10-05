@@ -220,13 +220,13 @@ function Analyzing({ step }: { step: number }) {
   const pct = Math.round(((step + 1) / STEPS.length) * 100);
   return (
     <div className="flex flex-1 flex-col items-center justify-center py-10">
-      <div className="relative flex h-40 w-40 items-center justify-center">
+      <div className="relative flex h-40 w-40 items-center justify-center lg:h-48 lg:w-48">
         <div className="absolute inset-0 animate-ping rounded-full bg-primary/10" />
         <div className="absolute inset-3 animate-spin rounded-full border-4 border-secondary border-t-primary" />
-        <span className="text-3xl font-extrabold">{pct}%</span>
+        <span className="text-3xl font-extrabold lg:text-4xl">{pct}%</span>
       </div>
-      <h2 className="mt-10 text-xl font-bold">Analysing your application</h2>
-      <ul className="mt-6 w-full space-y-3">
+      <h2 className="mt-10 text-xl font-bold lg:text-2xl">Analysing your application</h2>
+      <ul className="mt-6 w-full max-w-sm space-y-3">
         {STEPS.map((s, i) => (
           <li key={s} className={`flex items-center gap-3 text-sm transition ${i > step ? "opacity-30" : ""}`}>
             <span className={`flex h-6 w-6 items-center justify-center rounded-full ${i < step ? "bg-primary text-primary-foreground" : "bg-secondary"}`}>
