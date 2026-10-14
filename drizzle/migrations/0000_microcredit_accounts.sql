@@ -1,0 +1,13 @@
+CREATE TABLE public.profiles (id uuid PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE, name text NOT NULL CHECK (char_length(name) BETWEEN 1 AND 100), username text NOT NULL UNIQUE CHECK (username ~ '^[a-z0-9_]{3,30}$'), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT, UPDATE ON public.profiles TO authenticated;
+GRANT ALL ON public.profiles TO service_role;
+ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read own profile" ON public.profiles FOR SELECT TO authenticated USING (id = auth.uid());
+CREATE POLICY "Update own profile" ON public.profiles FOR UPDATE TO authenticated USING (id = auth.uid()) WITH CHECK (id = auth.uid());
+CREATE FUNCTION public.create_microcredit_profile() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path = public AS $$ BEGIN INSERT INTO public.profiles (id,name,username) VALUES (NEW.id, COALESCE(NEW.raw_user_meta_data->>'name','Пользователь'), COALESCE(NEW.raw_user_meta_data->>'username','user_' || replace(NEW.id::text,'-',''))); RETURN NEW; END; $$;
+CREATE TRIGGER microcredit_profile_signup AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION public.create_microcredit_profile();
+CREATE TABLE public.applications (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), user_id uuid NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE, amount integer NOT NULL CHECK (amount BETWEEN 100000 AND 500000), term integer NOT NULL CHECK (term IN (1,3,6,9,12)), status text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','reduced','declined')), created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.applications TO authenticated;
+GRANT ALL ON public.applications TO service_role;
+ALTER TABLE public.applications ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Read own applications" ON public.applications FOR SELECT TO authenticated USING (user_id = auth.uid());
