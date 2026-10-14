@@ -62,7 +62,7 @@
 }
 
 :root {
-  --radius: 1.25rem;
+  --radius: 0.5rem;
   --background: oklch(0.16 0.02 260);
   --foreground: oklch(0.97 0.005 260);
   --card: oklch(0.21 0.022 260);
@@ -149,3 +149,9 @@
     color: var(--color-foreground);
   }
 }
+
+:root { --background: oklch(0.155 0.004 260); --card: oklch(0.20 0.005 260); --secondary: oklch(0.25 0.005 260); --muted: oklch(0.25 0.005 260); --accent: oklch(0.28 0.005 260); --chart-2: oklch(0.72 0.10 210); --cover-shade: oklch(0.16 0 0); --cover-foreground: oklch(0.98 0 0); --cover-muted: oklch(0.8 0 0); }
+@theme inline { --color-cover-shade: var(--cover-shade); --color-cover-foreground: var(--cover-foreground); --color-cover-muted: var(--cover-muted); }
+body { font-family: var(--font-sans); letter-spacing: 0; }
+input[type=range],progress { accent-color: var(--primary); }
+@media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }

@@ -10,33 +10,183 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticated/activity'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedLoansRouteImport } from './routes/_authenticated/loans'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedAnalysisDemoRouteImport } from './routes/_authenticated/analysis.demo'
+import { Route as AuthenticatedApplicationsDemoRouteImport } from './routes/_authenticated/applications.demo'
+import { Route as AuthenticatedApplicationsNewRouteImport } from './routes/_authenticated/applications.new'
+import { Route as AuthenticatedLoansDemoRouteImport } from './routes/_authenticated/loans.demo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedActivityRoute = AuthenticatedActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLoansRoute = AuthenticatedLoansRouteImport.update({
+  id: '/loans',
+  path: '/loans',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAnalysisDemoRoute =
+  AuthenticatedAnalysisDemoRouteImport.update({
+    id: '/analysis/demo',
+    path: '/analysis/demo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedApplicationsDemoRoute =
+  AuthenticatedApplicationsDemoRouteImport.update({
+    id: '/applications/demo',
+    path: '/applications/demo',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedApplicationsNewRoute =
+  AuthenticatedApplicationsNewRouteImport.update({
+    id: '/applications/new',
+    path: '/applications/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLoansDemoRoute = AuthenticatedLoansDemoRouteImport.update({
+  id: '/demo',
+  path: '/demo',
+  getParentRoute: () => AuthenticatedLoansRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/activity': typeof AuthenticatedActivityRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/loans': typeof AuthenticatedLoansRouteWithChildren
+  '/profile': typeof AuthenticatedProfileRoute
+  '/analysis/demo': typeof AuthenticatedAnalysisDemoRoute
+  '/applications/demo': typeof AuthenticatedApplicationsDemoRoute
+  '/applications/new': typeof AuthenticatedApplicationsNewRoute
+  '/loans/demo': typeof AuthenticatedLoansDemoRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/activity': typeof AuthenticatedActivityRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/loans': typeof AuthenticatedLoansRouteWithChildren
+  '/profile': typeof AuthenticatedProfileRoute
+  '/analysis/demo': typeof AuthenticatedAnalysisDemoRoute
+  '/applications/demo': typeof AuthenticatedApplicationsDemoRoute
+  '/applications/new': typeof AuthenticatedApplicationsNewRoute
+  '/loans/demo': typeof AuthenticatedLoansDemoRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/login': typeof LoginRoute
+  '/register': typeof RegisterRoute
+  '/_authenticated/activity': typeof AuthenticatedActivityRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/loans': typeof AuthenticatedLoansRouteWithChildren
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
+  '/_authenticated/analysis/demo': typeof AuthenticatedAnalysisDemoRoute
+  '/_authenticated/applications/demo': typeof AuthenticatedApplicationsDemoRoute
+  '/_authenticated/applications/new': typeof AuthenticatedApplicationsNewRoute
+  '/_authenticated/loans/demo': typeof AuthenticatedLoansDemoRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/login'
+    | '/register'
+    | '/activity'
+    | '/dashboard'
+    | '/loans'
+    | '/profile'
+    | '/analysis/demo'
+    | '/applications/demo'
+    | '/applications/new'
+    | '/loans/demo'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/login'
+    | '/register'
+    | '/activity'
+    | '/dashboard'
+    | '/loans'
+    | '/profile'
+    | '/analysis/demo'
+    | '/applications/demo'
+    | '/applications/new'
+    | '/loans/demo'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/login'
+    | '/register'
+    | '/_authenticated/activity'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/loans'
+    | '/_authenticated/profile'
+    | '/_authenticated/analysis/demo'
+    | '/_authenticated/applications/demo'
+    | '/_authenticated/applications/new'
+    | '/_authenticated/loans/demo'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  LoginRoute: typeof LoginRoute
+  RegisterRoute: typeof RegisterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +198,133 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/activity': {
+      id: '/_authenticated/activity'
+      path: '/activity'
+      fullPath: '/activity'
+      preLoaderRoute: typeof AuthenticatedActivityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/loans': {
+      id: '/_authenticated/loans'
+      path: '/loans'
+      fullPath: '/loans'
+      preLoaderRoute: typeof AuthenticatedLoansRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/analysis/demo': {
+      id: '/_authenticated/analysis/demo'
+      path: '/analysis/demo'
+      fullPath: '/analysis/demo'
+      preLoaderRoute: typeof AuthenticatedAnalysisDemoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/applications/demo': {
+      id: '/_authenticated/applications/demo'
+      path: '/applications/demo'
+      fullPath: '/applications/demo'
+      preLoaderRoute: typeof AuthenticatedApplicationsDemoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/applications/new': {
+      id: '/_authenticated/applications/new'
+      path: '/applications/new'
+      fullPath: '/applications/new'
+      preLoaderRoute: typeof AuthenticatedApplicationsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/loans/demo': {
+      id: '/_authenticated/loans/demo'
+      path: '/demo'
+      fullPath: '/loans/demo'
+      preLoaderRoute: typeof AuthenticatedLoansDemoRouteImport
+      parentRoute: typeof AuthenticatedLoansRoute
+    }
   }
 }
 
+interface AuthenticatedLoansRouteChildren {
+  AuthenticatedLoansDemoRoute: typeof AuthenticatedLoansDemoRoute
+}
+
+const AuthenticatedLoansRouteChildren: AuthenticatedLoansRouteChildren = {
+  AuthenticatedLoansDemoRoute: AuthenticatedLoansDemoRoute,
+}
+
+const AuthenticatedLoansRouteWithChildren =
+  AuthenticatedLoansRoute._addFileChildren(AuthenticatedLoansRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedActivityRoute: typeof AuthenticatedActivityRoute
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedLoansRoute: typeof AuthenticatedLoansRouteWithChildren
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
+  AuthenticatedAnalysisDemoRoute: typeof AuthenticatedAnalysisDemoRoute
+  AuthenticatedApplicationsDemoRoute: typeof AuthenticatedApplicationsDemoRoute
+  AuthenticatedApplicationsNewRoute: typeof AuthenticatedApplicationsNewRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedActivityRoute: AuthenticatedActivityRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedLoansRoute: AuthenticatedLoansRouteWithChildren,
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
+  AuthenticatedAnalysisDemoRoute: AuthenticatedAnalysisDemoRoute,
+  AuthenticatedApplicationsDemoRoute: AuthenticatedApplicationsDemoRoute,
+  AuthenticatedApplicationsNewRoute: AuthenticatedApplicationsNewRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  LoginRoute: LoginRoute,
+  RegisterRoute: RegisterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

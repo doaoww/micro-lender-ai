@@ -1,5 +1,7 @@
 {
   "name": "AI MicroCredit",
+  "lang": "ru",
+  "description": "Финансовый обзор и понятная оценка микрокредита",
   "short_name": "MicroCredit",
   "start_url": "/",
   "display": "standalone",
